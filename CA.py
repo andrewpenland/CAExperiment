@@ -1,40 +1,74 @@
+"""
+Description:
+    Functions that generate and evolve a cellular automaton over a given
+    radius (neighborhood).
+Original Authors:
+    Bailey Stillman & Dr.Andrew Penland (2018)
+Edits done by:
+    David Walsh (2019)
+"""
+
 import math
 import sys
 import random
 
-'''
-bin_to_dec
+CA_BLOCK_SIZE = 4
 
-convert a number from binary to decimal
-'''
 
 def bin_to_dec(bin_string):
+    """Converts a number (as a string type) from binary to decimal
+
+    Args:
+        bin_string: String representing the binary value
+
+    Returns:
+        binary_value: Positive integer representing decimal value
+
+    Raises:
+        TypeError: If arg is not a valid string
+        ValueError: If arg is not valid integer
+        Exception: If arg is not the valid block length
+    """
     # tot = 0
     # n = len(bin_string)
     # #add the appropriate power of 2 at each step
     # for i in range(n):
     #     tot += bin_string[(n-1)-i]*2**i
     # return tot
-    return int(bin_string, 2)
+    if len(bin_string) == CA_BLOCK_SIZE:
+        try:
+            binary_value = int(bin_string, 2)
+        except TypeError:
+            raise TypeError("Non-valid argument type.")
+        except ValueError:
+            raise ValueError("Non-integer value.")
+    else:
+        raise Exception("Invalid block length.")
 
-'''
-dec_to_bin
+    return binary_value
 
-convert a number from decimal to binary (as a list)
 
-'''
+def dec_to_bin(num, nbits=8):
+    """Converts a number from decimal to binary (as a list)
 
-def dec_to_bin(num, nbits = 8):
+    Args:
+        num: Integer representing the decimal value
+        nbits: Integer representing number of bits that will be returned
+
+    Returns:
+        binary_value: Positive integer representing decimal value
+    """
     new_num = num
     bin = []
     for j in range(nbits):
-        #create the appropriate power of 2 for the current step
+        # create the appropriate power of 2 for the current step
         current_bin_mark = 2**(nbits-1-j)
-        #check to see if you can subtract this power of 2; if so, then subtract it and append 1
-        if (new_num >= current_bin_mark):
+        # check to see if you can subtract this power of 2; if so,
+        # then subtract it and append 1
+        if new_num >= current_bin_mark:
             bin.append(1)
             new_num = new_num - current_bin_mark
-        #if you can't subtract, append 0
+        # if you can't subtract, append 0
         else:
             bin.append(0)
     return bin
@@ -87,13 +121,14 @@ for this one, we want to use the table so that we don't have to call
 the "convert to table" function every time evolve calls this function. 
 '''
 
+
 def evolve_one_step(rule_table,config_to_update):
     old_config = config_to_update
     new_config = []
     config_length = len(config_to_update)
-    #the expression below recovers the radius r,
-    #using the fact that in a symmetric rule table
-    #the length is equal to 2**(2*r-1)
+    # the expression below recovers the radius r,
+    # using the fact that in a symmetric rule table
+    # the length is equal to 2**(2*r-1)
     radius = int(math.floor((math.log(len(rule_table),2) - 1)/2))
     for i in range(config_length):
         local_config = []
@@ -109,9 +144,10 @@ evolve
 apply a given rule to a given configuration (both expressed as integers) 
 '''
 
+
 def evolve(rule_num, radius, config_num, config_length, ngens):
-    #check to see if we got the ``rule number version'' as an integer
-    #or as a list
+    # check to see if we got the ``rule number version'' as an integer
+    # or as a list
     if type(rule_num) is int:
         rule_table_to_use = make_rule_table(rule_num, radius)
     else:
@@ -136,8 +172,9 @@ def evolve(rule_num, radius, config_num, config_length, ngens):
 make a random initial configuration of a given length
 '''
 
+
 def random_initial_config(config_length):
-    config = [random.choice([0,1]) for i in range(config_length)]
+    config = [random.choice([0, 1]) for i in range(config_length)]
     return config
 
 '''
@@ -145,6 +182,7 @@ random_initial_ensemble
 
 make an initial ensemble of randomly chosen configurations
 '''
+
 
 def random_initial_ensemble(config_length,size):
     i = 0
@@ -157,15 +195,19 @@ def random_initial_ensemble(config_length,size):
     return initial_ensemble
 
 
-
-'''random_rule_table
-
-make a random rule table of a given length
-'''
-
 def random_rule_table(radius):
-    config = [random.choice([0,1]) for i in range(2**(2*radius+1))]
+    """Make a random rule table of a given length
+
+    Args:
+        radius: The radius (neighborhood) in which the CA evolves
+
+    Returns:
+        config: The rule table given the length
+    """
+
+    config = [random.choice([0, 1]) for i in range(2**(2*radius+1))]
     return config
+
 
 '''
 take_sequence
@@ -173,19 +215,22 @@ take_sequence
 takes a sequence from an orbit by taking the values at a specified cell
 '''
 
+
 def take_sequence(orbit_to_use, cell_to_strip):
-    #use a list comprehension
+    # use a list comprehension
     return [value[cell_to_strip] for value in orbit_to_use]
+
 
 '''
 generate_ca_sequence
 
-takes an initial configuration, a CA rule, and returns the binary sequence given by
-stripping out the values at a particular cell. 
+takes an initial configuration, a CA rule, and returns the binary sequence 
+given by stripping out the values at a particular cell. 
 '''
 
-def generate_ca_sequence(rule_num, radius, config_num, config_length, ngens, cell_to_strip = 0):
-    orbit = evolve(rule_num, radius, config_num, config_length,ngens)
+
+def generate_ca_sequence(rule_num, radius, config_num, config_length, ngens, cell_to_strip=0):
+    orbit = evolve(rule_num, radius, config_num, config_length, ngens)
     sequence = take_sequence(orbit, cell_to_strip)
     return sequence
 
@@ -195,14 +240,14 @@ def generate_ca_sequence(rule_num, radius, config_num, config_length, ngens, cel
 test_rule_for_time
 '''
 
-def main():
-    #we need to parse the individual arguments in the string we were given
-    #then convert those to integers
-    #then run the program with those arguments
-    #then return the output
 
-    #in practice, this will probably never pop up, since we will probably always be calling this
-    #as a library for other scripts to access.
+def main():
+    # we need to parse the individual arguments in the string we were given
+    # then convert those to integers
+    # then run the program with those arguments
+    # then return the output
+    # in practice, this will probably never pop up, since we will probably
+    # always be calling this as a library for other scripts to access.
 
     if len(sys.argv) == 2:
         arg_array = sys.argv[1]
@@ -222,6 +267,8 @@ def main():
     print(str(evolution))
 
 
+"""
+Main
+"""
 if __name__ == "__main__":
-    main()   
-      
+    main()
