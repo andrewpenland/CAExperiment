@@ -1,0 +1,29 @@
+test_bin_to_dec (__main__.TestCA) ... 2019-06-14 14:40:25.748420
+ok
+test_dec_to_bin (__main__.TestCA) ... 2019-06-14 14:40:25.748420
+ok
+test_make_rule_table (__main__.TestCA) ... 2019-06-14 14:40:25.748420
+ok
+test_make_config (__main__.TestCA) ... 2019-06-14 14:40:25.748420
+ok
+test_config_density (__main__.TestCA) ... 2019-06-14 14:40:25.748420
+ok
+test_evolve_one_step (__main__.TestCA) ... 2019-06-14 14:40:25.748420
+ok
+test_evolve (__main__.TestCA) ... 2019-06-14 14:40:25.748420
+ok
+test_random_initial_config (__main__.TestCA) ... 2019-06-14 14:40:25.750943
+ok
+test_random_initial_ensemble (__main__.TestCA) ... 2019-06-14 14:40:25.750943
+ok
+test_random_rule_table (__main__.TestCA) ... 2019-06-14 14:40:25.750943
+ok
+test_take_sequence (__main__.TestCA) ... 2019-06-14 14:40:25.750943
+ok
+test_generate_ca_sequence (__main__.TestCA) ... 2019-06-14 14:40:25.750943
+ok
+
+----------------------------------------------------------------------
+Ran 12 tests in 0.003s
+
+OK
