@@ -1,16 +1,27 @@
+from datetime import datetime
+import sys
+from contextlib import redirect_stdout
 import unittest
 import CA
 
-LOG_FILE = "ca_unit_test.txt"
+LOG_FILE = "ca_unit_test_" + \
+           str(datetime.now().strftime("%Y%m%d_%H%M%S")) + ".txt"
 
 
 class TestCA(unittest.TestCase):
 
-    def setUp(self):
+    @classmethod
+    def setUpClass(cls):
+        pass
+        #print(datetime.now())
+
+    @classmethod
+    def setUp(cls):
         pass
 
-    def tearDown(self):
-        pass
+    @classmethod
+    def tearDown(cls):
+        print(datetime.now())
 
     def test_bin_to_dec(self):
         """
@@ -63,6 +74,15 @@ class TestCA(unittest.TestCase):
         # test rule 30
         self.assertEqual(CA.make_rule_table(30, 1), [0, 1, 1, 1, 1, 0, 0, 0])
 
+    def test_make_config(self):
+        pass
+
+    def test_config_density(self):
+        pass
+
+    def test_evolve_one_step(self):
+        pass
+
     def test_evolve(self):
         pass
         # print(CA.make_rule_table(30, 1))
@@ -70,16 +90,40 @@ class TestCA(unittest.TestCase):
         # new_state = CA.evolve(30, 1, 1, 1, 1)
         # self.assertEqual(new_state, [1, 1, 1, 0, 0, 1])
 
+    def test_random_initial_config(self):
+        pass
+
+    def test_random_initial_ensemble(self):
+        pass
+
+    def test_random_rule_table(self):
+        pass
+
+    def test_take_sequence(self):
+        pass
+
+    def test_generate_ca_sequence(self):
+        pass
+
+def suite():
+    suite = unittest.TestSuite()
+    suite.addTest(TestCA('test_bin_to_dec'))
+    suite.addTest(TestCA('test_dec_to_bin'))
+    suite.addTest(TestCA('test_make_rule_table'))
+    suite.addTest(TestCA('test_make_config'))
+    suite.addTest(TestCA('test_config_density'))
+    suite.addTest(TestCA('test_evolve_one_step'))
+    suite.addTest(TestCA('test_evolve'))
+    suite.addTest(TestCA('test_random_initial_config'))
+    suite.addTest(TestCA('test_random_initial_ensemble'))
+    suite.addTest(TestCA('test_random_rule_table'))
+    suite.addTest(TestCA('test_take_sequence'))
+    suite.addTest(TestCA('test_generate_ca_sequence'))
+    return suite
+
 
 if __name__ == '__main__':
-    # log file to write
-    log_file = LOG_FILE
-    # set logging verbosity
-    suite = unittest.TestLoader().loadTestsFromTestCase(TestCA)
-    unittest.TextTestRunner(verbosity=2).run(suite)
-    # write log file using context manager
-    with open(log_file, "w") as f:
-        runner = unittest.TextTestRunner(f)
-        unittest.main(testRunner=runner)
-    # main
-    unittest.main()
+    with open(LOG_FILE, 'w') as f:
+        with redirect_stdout(f):
+            runner = unittest.TextTestRunner(stream=sys.stdout, verbosity=2)
+            runner.run(suite())

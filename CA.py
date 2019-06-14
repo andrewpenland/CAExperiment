@@ -12,8 +12,6 @@ import math
 import sys
 import random
 
-CA_BLOCK_SIZE = 4
-
 
 def bin_to_dec(bin_string):
     """Converts a number (as a string type) from binary to decimal
@@ -35,16 +33,12 @@ def bin_to_dec(bin_string):
     # for i in range(n):
     #     tot += bin_string[(n-1)-i]*2**i
     # return tot
-    if len(bin_string) == CA_BLOCK_SIZE:
-        try:
-            binary_value = int(bin_string, 2)
-        except TypeError:
-            raise TypeError("Non-valid argument type.")
-        except ValueError:
-            raise ValueError("Non-integer value.")
-    else:
-        raise Exception("Invalid block length.")
-
+    try:
+        binary_value = int(bin_string, 2)
+    except TypeError:
+        raise TypeError("Non-valid argument type.")
+    except ValueError:
+        raise ValueError("Non-integer value.")
     return binary_value
 
 
