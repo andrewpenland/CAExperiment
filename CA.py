@@ -21,19 +21,13 @@ def bin_to_dec(bin_string):
 
     Returns:
         binary_value: Positive integer representing decimal value
-
-    Raises:
-        TypeError: If arg is not a valid string
-        ValueError: If arg is not valid integer
-        Exception: If arg is not the valid block length
     """
-    try:
-        binary_value = int(bin_string, 2)
-    except TypeError:
-        raise TypeError("Non-valid argument type.")
-    except ValueError:
-        raise ValueError("Non-integer value.")
-    return binary_value
+    tot = 0
+    n = len(bin_string)
+    # add the appropriate power of 2 at each step
+    for i in range(n):
+        tot += int(bin_string[(n - 1) - i]) * 2 ** i
+    return tot
 
 
 def dec_to_bin(num, nbits=8):
@@ -62,7 +56,7 @@ def dec_to_bin(num, nbits=8):
     return bin
 
 
-def make_rule_table(num,radius):
+def make_rule_table(num, radius):
     """
     Takes a integer and a radius and generates the CA rule table
 
@@ -80,7 +74,7 @@ def make_rule_table(num,radius):
     return the_table
 
 
-def make_config(num,config_length):
+def make_config(num, config_length):
     """
     Generates the configuration for the CA
 
@@ -112,7 +106,7 @@ def config_density(config):
     return float(sum(config))/float((len(config)))
 
 
-def evolve_one_step(rule_table,config_to_update):
+def evolve_one_step(rule_table, config_to_update):
     """
     A helper function for the evolve function. Applies a given rule to a
     given CA configuration (both expressed as lists). A table is used so the
@@ -132,11 +126,11 @@ def evolve_one_step(rule_table,config_to_update):
     # the expression below recovers the radius r,
     # using the fact that in a symmetric rule table
     # the length is equal to 2**(2*r-1)
-    radius = int(math.floor((math.log(len(rule_table),2) - 1)/2))
+    radius = int(math.floor((math.log(len(rule_table), 2) - 1)/2))
     for i in range(config_length):
         local_config = []
         for j in range(i - radius, i + radius + 1):
-            local_config.append(old_config[j%config_length])
+            local_config.append(old_config[j % config_length])
         cell_update = rule_table[bin_to_dec(local_config)]
         new_config.append(cell_update)
     return new_config
@@ -165,7 +159,7 @@ def evolve(rule_num, radius, config_num, config_length, ngens):
         rule_table_to_use = rule_num
     orbit = []
     if type(config_num) is int:
-        init_config = make_config(config_num,config_length)
+        init_config = make_config(config_num, config_length)
         old_config = make_config(config_num, config_length)
     else:
         init_config = config_num

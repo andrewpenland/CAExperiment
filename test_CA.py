@@ -5,7 +5,7 @@ import unittest
 import CA
 
 CONSOLE_OUTPUT = 1
-WRITE_LOG = 1
+WRITE_LOG = 0
 LOG_FILE = "ca_unit_test_" + \
            str(datetime.now().strftime("%Y%m%d_%H%M%S")) + ".txt"
 
@@ -29,7 +29,7 @@ class TestCA(unittest.TestCase):
         Test Case #1
         Check to see if return type is int and correct value
         """
-        result = CA.bin_to_dec("1000")
+        result = CA.bin_to_dec([1, 0, 0, 0])
         expected = 8
         self.assertTrue(type(result is int))
         self.assertEqual(result, expected)
@@ -76,14 +76,33 @@ class TestCA(unittest.TestCase):
         """
         Test Case #2
         Check for expected value
+        Values are ordinal so they need to be reversed
         """
         result = CA.dec_to_bin(8, 4)
+        result = result[::-1]  # reversed
         expected = [1, 0, 0, 0]
+        expected = expected[::-1]  # reversed
         self.assertEqual(result, expected)
 
         """
         Test Case #3
+        Check for edge case
         """
+        result = CA.dec_to_bin(0, 4)
+        result = result[::-1]  # reversed
+        expected = [0, 0, 0, 0]
+        expected = expected[::-1]  # reversed
+        self.assertEqual(result, expected)
+
+        """
+        Test Case #3
+        Check for edge case
+        """
+        result = CA.dec_to_bin(15, 4)
+        result = result[::-1]  # reversed
+        expected = [1, 1, 1, 1]
+        expected = expected[::-1]  # reversed
+        self.assertEqual(result, expected)
 
     def test_make_rule_table(self):
         """
@@ -92,22 +111,32 @@ class TestCA(unittest.TestCase):
         """
         result = type(CA.make_rule_table(30, 1))
         self.assertTrue(result is list)
-        # test rule 30
+
+        """
+        Test Case #2
+        Check rule 30 for correct value
+        """
         result = CA.make_rule_table(30, 1)
         expected = [0, 1, 1, 1, 1, 0, 0, 0]
         self.assertEqual(result, expected)
 
         """
-        Test Case #2
-        """
-
-        """
         Test Case #3
+        Check for correct length
         """
+        result = CA.make_rule_table(30, 1)
+        expected = 8
+        result_len = len(result)
+        self.assertEqual(result_len, expected)
 
         """
         Test Case #4
+        Check for edge case
         """
+        result = CA.make_rule_table(0, 1)
+        expected = 8  # default bits are equal to 8
+        result_len = len(result)
+        self.assertEqual(result_len, expected)
 
         """
         Test Case #5
@@ -193,6 +222,15 @@ class TestCA(unittest.TestCase):
         """
         Test Case #2
         """
+        rule_num = 30
+        radius = 1
+        config_num = [1, 0, 1, 0, 1, 1, 0, 1, 0, 1, 1]
+        config_length = 1
+        ngens = 0
+        result = CA.evolve(rule_num, radius, config_num, config_length,
+                           ngens)
+        expected = [1, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 0]
+        # self.assertEqual(result, expected)
 
         """
         Test Case #3
