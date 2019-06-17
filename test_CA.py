@@ -143,22 +143,36 @@ class TestCA(unittest.TestCase):
         """
 
     def test_make_config(self):
-        pass
         """
         Test Case #1
+        Check for correct return type
         """
+        result = type(CA.make_config(30, 1))
+        self.assertTrue(result is list)
 
         """
         Test Case #2
+        Check for correct values
         """
+        result = CA.make_config(30, 8)
+        expected = [0, 1, 1, 1, 1, 0, 0, 0]
+        self.assertEqual(result, expected)
 
         """
         Test Case #3
+        Check for correct length
         """
+        result = len(CA.make_config(30, 8))
+        expected = 8
+        self.assertEqual(result, expected)
 
         """
         Test Case #4
+        Test edge case
         """
+        result = len(CA.make_config(0, 8))
+        expected = 8
+        self.assertEqual(result, expected)
 
         """
         Test Case #5
@@ -188,7 +202,6 @@ class TestCA(unittest.TestCase):
         """
 
     def test_evolve_one_step(self):
-        pass
         """
         Test Case #1
         """
@@ -210,7 +223,6 @@ class TestCA(unittest.TestCase):
         """
 
     def test_evolve(self):
-        pass
         """
         Test Case #1
         """
