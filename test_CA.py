@@ -170,8 +170,8 @@ class TestCA(unittest.TestCase):
         Test Case #4
         Test edge case
         """
-        result = len(CA.make_config(0, 8))
-        expected = 8
+        result = CA.make_config(0, 8)
+        expected = [0, 0, 0, 0, 0, 0, 0, 0]
         self.assertEqual(result, expected)
 
         """
@@ -345,22 +345,37 @@ class TestCA(unittest.TestCase):
         """
 
     def test_generate_ca_sequence(self):
-        pass
         """
         Test Case #1
+        Check return type
         """
+        result = type(CA.generate_ca_sequence(30, 1, 1, 8, 10))
+        self.assertTrue(result is list)
 
         """
         Test Case #2
+        Check for correct values
         """
+        result = CA.generate_ca_sequence(30, 1, 1, 8, 10)
+        expected = [1, 1, 0, 1, 1, 1, 0, 0, 1, 1, 1]
+        self.assertEqual(result, expected)
 
         """
         Test Case #3
+        Check for length
         """
+        result = len(CA.generate_ca_sequence(30, 1, 1, 8, 1))
+        expected = 2  # number generations + 1
+        self.assertEqual(result, expected)
 
         """
         Test Case #4
+        Check for edge case
         """
+        result = len(CA.generate_ca_sequence(30, 1, 1, 8, 0, 1))
+        expected = 1  # number of generations + 1
+        self.assertEqual(result, expected)
+
 
         """
         Test Case #5
