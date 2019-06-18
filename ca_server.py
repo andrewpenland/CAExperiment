@@ -63,7 +63,7 @@ def write_job(job, file_name):
     print("Results\n===================")
     print(df)
     print("Writing results to csv file...\n")
-    df.to_csv(WRITE_DIRECTORY + file_name)
+    df.to_csv(WRITE_DIRECTORY + file_name + '.csv')
 
 
 def client_thread(conn, ip, port, max_buffer_size=4096):
