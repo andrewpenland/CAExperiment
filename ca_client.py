@@ -14,4 +14,5 @@ soc.send(clients_input.encode("utf8"))
 result_bytes = soc.recv(4096)
 result_string = result_bytes.decode("utf8")
 
-print("Result from server is {}".format(result_string)) 
+print("Result from server is {}".format(result_string))
+

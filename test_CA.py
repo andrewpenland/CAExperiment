@@ -365,7 +365,7 @@ class TestCA(unittest.TestCase):
         Check for length
         """
         result = len(CA.generate_ca_sequence(30, 1, 1, 8, 1))
-        expected = 2  # number generations + 1
+        expected = 2  # number generations + 1 (zero indexing)
         self.assertEqual(result, expected)
 
         """
@@ -373,7 +373,7 @@ class TestCA(unittest.TestCase):
         Check for edge case
         """
         result = len(CA.generate_ca_sequence(30, 1, 1, 8, 0, 1))
-        expected = 1  # number of generations + 1
+        expected = 1  # number of generations + 1 (zero indexing)
         self.assertEqual(result, expected)
 
 

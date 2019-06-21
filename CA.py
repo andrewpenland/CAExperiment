@@ -260,7 +260,7 @@ def generate_ca_sequence(rule_num, radius, config_num, config_length, ngens,
     return sequence
 
 
-def main():
+def main(the_rule_num, rule_radius, conf_num, conf_length, this_ngens):
     # we need to parse the individual arguments in the string we were given
     # then convert those to integers
     # then run the program with those arguments
@@ -268,27 +268,30 @@ def main():
     # in practice, this will probably never pop up, since we will probably
     # always be calling this as a library for other scripts to access.
 
-    if len(sys.argv) == 2:
-        arg_array = sys.argv[1]
-        command_line_args = arg_array.split(" ")
-
-    else:
-        command_line_args = sys.argv[1:]
-
-    int_command_line_args = [int(arg) for arg in command_line_args]
-    the_rule_num = int_command_line_args[0]
-    rule_radius = int_command_line_args[1]
-    conf_num = int_command_line_args[2]
-    conf_length = int_command_line_args[3]
-    this_ngens = int_command_line_args[4]
+    # if len(sys.argv) == 2:
+    #     arg_array = sys.argv[1]
+    #     command_line_args = arg_array.split(" ")
+    #
+    # else:
+    #     command_line_args = sys.argv[1:]
+    #
+    # int_command_line_args = [int(arg) for arg in command_line_args]
+    # the_rule_num = int_command_line_args[0]
+    # rule_radius = int_command_line_args[1]
+    # conf_num = int_command_line_args[2]
+    # conf_length = int_command_line_args[3]
+    # this_ngens = int_command_line_args[4]
 
     evolution = evolve(the_rule_num, rule_radius, conf_num, conf_length,
                        this_ngens)
-    print(str(evolution))
+
+    return evolution
 
 
 """
 Main
 """
 if __name__ == "__main__":
-    main()
+    # main()
+    pass
+
