@@ -22,6 +22,7 @@ def bin_to_dec(bin_string):
     Returns:
         binary_value: Positive integer representing decimal value
     """
+    bin_string = bin_string[::-1]
     tot = 0
     n = len(bin_string)
     # add the appropriate power of 2 at each step
@@ -53,7 +54,7 @@ def dec_to_bin(num, nbits=8):
         # if you can't subtract, append 0
         else:
             bin.append(0)
-    return bin
+    return bin[::-1]
 
 
 def make_rule_table(num, radius):

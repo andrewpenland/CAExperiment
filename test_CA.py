@@ -29,7 +29,9 @@ class TestCA(unittest.TestCase):
         Test Case #1
         Check to see if return type is int and correct value
         """
-        result = CA.bin_to_dec([1, 0, 0, 0])
+        expression = [1, 0, 0, 0]
+        expression = expression[::-1]  # reverse ordinal value
+        result = CA.bin_to_dec(expression)
         expected = 8
         self.assertTrue(type(result is int))
         self.assertEqual(result, expected)
@@ -38,7 +40,9 @@ class TestCA(unittest.TestCase):
         Test Case #2
         Check to see if return type is int and correct value
         """
-        result = CA.bin_to_dec("0000")
+        expression = "0000"
+        expression = expression[::-1]  # reverse ordinal value
+        result = CA.bin_to_dec(expression)
         expected = 0
         self.assertTrue(type(result is int))
         self.assertEqual(result, expected)
@@ -47,7 +51,9 @@ class TestCA(unittest.TestCase):
         Test Case #3
         Check for length
         """
-        result = CA.bin_to_dec("1111")
+        expression = "1111"
+        expression = expression[::-1]  # reverse ordinal value
+        result = CA.bin_to_dec(expression)
         expected = 15
         self.assertEquals(result, expected)
 
@@ -79,7 +85,6 @@ class TestCA(unittest.TestCase):
         Values are ordinal so they need to be reversed
         """
         result = CA.dec_to_bin(8, 4)
-        result = result[::-1]  # reversed
         expected = [1, 0, 0, 0]
         expected = expected[::-1]  # reversed
         self.assertEqual(result, expected)
@@ -89,7 +94,6 @@ class TestCA(unittest.TestCase):
         Check for edge case
         """
         result = CA.dec_to_bin(0, 4)
-        result = result[::-1]  # reversed
         expected = [0, 0, 0, 0]
         expected = expected[::-1]  # reversed
         self.assertEqual(result, expected)
@@ -99,7 +103,6 @@ class TestCA(unittest.TestCase):
         Check for edge case
         """
         result = CA.dec_to_bin(15, 4)
-        result = result[::-1]  # reversed
         expected = [1, 1, 1, 1]
         expected = expected[::-1]  # reversed
         self.assertEqual(result, expected)
@@ -118,6 +121,7 @@ class TestCA(unittest.TestCase):
         """
         result = CA.make_rule_table(30, 1)
         expected = [0, 1, 1, 1, 1, 0, 0, 0]
+        expected = expected[::-1]
         self.assertEqual(result, expected)
 
         """
@@ -138,10 +142,6 @@ class TestCA(unittest.TestCase):
         result_len = len(result)
         self.assertEqual(result_len, expected)
 
-        """
-        Test Case #5
-        """
-
     def test_make_config(self):
         """
         Test Case #1
@@ -156,6 +156,7 @@ class TestCA(unittest.TestCase):
         """
         result = CA.make_config(30, 8)
         expected = [0, 1, 1, 1, 1, 0, 0, 0]
+        expected = expected[::-1]
         self.assertEqual(result, expected)
 
         """
@@ -172,34 +173,8 @@ class TestCA(unittest.TestCase):
         """
         result = CA.make_config(0, 8)
         expected = [0, 0, 0, 0, 0, 0, 0, 0]
+        expected = expected[::-1]
         self.assertEqual(result, expected)
-
-        """
-        Test Case #5
-        """
-
-    def test_config_density(self):
-        pass
-
-        """
-        Test Case #1
-        """
-
-        """
-        Test Case #2
-        """
-
-        """
-        Test Case #3
-        """
-
-        """
-        Test Case #4
-        """
-
-        """
-        Test Case #5
-        """
 
     def test_evolve_one_step(self):
         """
@@ -256,72 +231,6 @@ class TestCA(unittest.TestCase):
         Test Case #5
         """
 
-    def test_random_initial_config(self):
-        pass
-        """
-        Test Case #1
-        """
-
-        """
-        Test Case #2
-        """
-
-        """
-        Test Case #3
-        """
-
-        """
-        Test Case #4
-        """
-
-        """
-        Test Case #5
-        """
-
-    def test_random_initial_ensemble(self):
-        pass
-        """
-        Test Case #1
-        """
-
-        """
-        Test Case #2
-        """
-
-        """
-        Test Case #3
-        """
-
-        """
-        Test Case #4
-        """
-
-        """
-        Test Case #5
-        """
-
-    def test_random_rule_table(self):
-        pass
-        """
-        Test Case #1
-        """
-
-        """
-        Test Case #2
-        """
-
-        """
-        Test Case #3
-        """
-
-        """
-        Test Case #4
-        """
-
-        """
-        Test Case #5
-        """
-
     def test_take_sequence(self):
         pass
         """
@@ -357,7 +266,7 @@ class TestCA(unittest.TestCase):
         Check for correct values
         """
         result = CA.generate_ca_sequence(30, 1, 1, 8, 10)
-        expected = [1, 1, 0, 1, 1, 1, 0, 0, 1, 1, 1]
+        expected = [0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0]
         self.assertEqual(result, expected)
 
         """
@@ -377,23 +286,14 @@ class TestCA(unittest.TestCase):
         self.assertEqual(result, expected)
 
 
-        """
-        Test Case #5
-        """
-
-
 def suite():
     suite = unittest.TestSuite()
     suite.addTest(TestCA('test_bin_to_dec'))
     suite.addTest(TestCA('test_dec_to_bin'))
     suite.addTest(TestCA('test_make_rule_table'))
     suite.addTest(TestCA('test_make_config'))
-    suite.addTest(TestCA('test_config_density'))
     suite.addTest(TestCA('test_evolve_one_step'))
     suite.addTest(TestCA('test_evolve'))
-    suite.addTest(TestCA('test_random_initial_config'))
-    suite.addTest(TestCA('test_random_initial_ensemble'))
-    suite.addTest(TestCA('test_random_rule_table'))
     suite.addTest(TestCA('test_take_sequence'))
     suite.addTest(TestCA('test_generate_ca_sequence'))
     return suite
