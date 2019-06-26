@@ -71,7 +71,7 @@ def make_rule_table(num, radius):
     # convert the number to the appropriate binary number
     binary_form = dec_to_bin(num, 2**(2*radius+1))
     # make the binary number readable as a lookup table (reverse it)
-    the_table = binary_form[::-1]
+    the_table = binary_form
     return the_table
 
 
@@ -89,7 +89,7 @@ def make_config(num, config_length):
     # convert the number to the appropriate binary number
     binary_form = dec_to_bin(num, config_length)
     # make the binary number readable as a configuration (reverse it)
-    the_config = binary_form[::-1]
+    the_config = binary_form
     return the_config
 
 
