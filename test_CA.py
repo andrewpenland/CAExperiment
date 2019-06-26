@@ -121,7 +121,6 @@ class TestCA(unittest.TestCase):
         """
         result = CA.make_rule_table(30, 1)
         expected = [0, 1, 1, 1, 1, 0, 0, 0]
-        expected = expected[::-1]
         self.assertEqual(result, expected)
 
         """
@@ -156,7 +155,6 @@ class TestCA(unittest.TestCase):
         """
         result = CA.make_config(30, 8)
         expected = [0, 1, 1, 1, 1, 0, 0, 0]
-        expected = expected[::-1]
         self.assertEqual(result, expected)
 
         """
@@ -179,25 +177,48 @@ class TestCA(unittest.TestCase):
     def test_evolve_one_step(self):
         """
         Test Case #1
+        Rule 30 evolved over 1 generation
         """
-        rule_30 = CA.evolve(30, 1, 1, 8, 1)
-        print(rule_30)
+        rule_table = CA.make_rule_table(30, 1)
+        rule_30 = CA.evolve_one_step(rule_table, [1, 0, 0, 0, 0, 0, 0, 0])
+        expected = [1, 1, 0, 0, 0, 0, 0, 1]
+        self.assertEqual(rule_30, expected)
 
         """
         Test Case #2
+        Rule 90 evolved over 1 generation
         """
+        rule_table = CA.make_rule_table(90, 1)
+        rule_90 = CA.evolve_one_step(rule_table, [1, 0, 0, 0, 0, 0, 0, 0])
+        expected = [0, 1, 0, 0, 0, 0, 0, 1]
+        self.assertEqual(rule_90, expected)
 
         """
         Test Case #3
+        Rule 184 evolved over 1 generation
         """
+        rule_table = CA.make_rule_table(184, 1)
+        rule_184 = CA.evolve_one_step(rule_table, [1, 0, 0, 0, 0, 0, 0, 0])
+        expected = [0, 0, 0, 0, 0, 0, 0, 1]
+        self.assertEqual(rule_184, expected)
 
         """
         Test Case #4
+        Rule 102 evolved over 1 generation
         """
+        rule_table = CA.make_rule_table(102, 1)
+        rule_102 = CA.evolve_one_step(rule_table, [1, 0, 0, 0, 0, 0, 0, 0])
+        expected = [1, 1, 0, 0, 0, 0, 0, 0]
+        self.assertEqual(rule_102, expected)
 
         """
         Test Case #5
+        Rule 222 evolved over 1 generation
         """
+        rule_table = CA.make_rule_table(222, 1)
+        rule_222 = CA.evolve_one_step(rule_table, [1, 0, 0, 0, 0, 0, 0, 0])
+        expected = [1, 1, 0, 0, 0, 0, 0, 1]
+        self.assertEqual(rule_222, expected)
 
     def test_evolve(self):
         """
@@ -213,7 +234,6 @@ class TestCA(unittest.TestCase):
         Rule 90 evolved over 1 radius of length 8 for 4 generations
         """
         rule_90 = CA.evolve(90, 1, 1, 8, 3)
-        print(rule_90)
         expected = [0, 1, 0, 1, 0, 1, 0, 1]
         self.assertEqual(rule_90[3], expected)
 
@@ -276,7 +296,7 @@ class TestCA(unittest.TestCase):
         Check for correct values
         """
         result = CA.generate_ca_sequence(30, 1, 1, 8, 10)
-        expected = [0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0]
+        expected = [1, 1, 0, 1, 1, 1, 0, 0, 1, 1, 1]
         self.assertEqual(result, expected)
 
         """
@@ -298,14 +318,14 @@ class TestCA(unittest.TestCase):
 
 def suite():
     suite = unittest.TestSuite()
-    # suite.addTest(TestCA('test_bin_to_dec'))
-    # suite.addTest(TestCA('test_dec_to_bin'))
-    # suite.addTest(TestCA('test_make_rule_table'))
-    # suite.addTest(TestCA('test_make_config'))
-    # suite.addTest(TestCA('test_evolve_one_step'))
+    suite.addTest(TestCA('test_bin_to_dec'))
+    suite.addTest(TestCA('test_dec_to_bin'))
+    suite.addTest(TestCA('test_make_rule_table'))
+    suite.addTest(TestCA('test_make_config'))
+    suite.addTest(TestCA('test_evolve_one_step'))
     suite.addTest(TestCA('test_evolve'))
-    # suite.addTest(TestCA('test_take_sequence'))
-    # suite.addTest(TestCA('test_generate_ca_sequence'))
+    suite.addTest(TestCA('test_take_sequence'))
+    suite.addTest(TestCA('test_generate_ca_sequence'))
     return suite
 
 
