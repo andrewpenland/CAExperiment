@@ -1,11 +1,11 @@
-import CA
 import datetime
-import sys
-import socket
 import os
-import pickle
-from threading import Thread
+import socket
+import sys
 import traceback
+from threading import Thread
+
+import CA
 from ca_process import CAProcessor
 
 SERVER_ADDRESS = "127.0.0.1"
@@ -41,6 +41,27 @@ class CAServer:
         else:
             print(self.get_time() + "Results directory found...")
 
+    def client_thread(self, conn, ip, port, max_buffer_size=4096):
+
+        # the input is in bytes, so decode it
+        input_from_client_bytes = conn.recv(max_buffer_size)
+
+        # max_buffer_size is how big the message can be
+        siz = sys.getsizeof(input_from_client_bytes)
+        if siz >= max_buffer_size:
+            print("The length of input is probably too long: {}".format(siz))
+
+        # decode input and strip the end of line
+        input_from_client = input_from_client_bytes.decode("utf8").rstrip()
+
+        res = self.parse_ca_job_string(input_from_client)
+        # print("Result of processing {} is: {}".format(input_from_client, res))
+
+        vysl = res.encode("utf8")  # encode the result string
+        conn.sendall(vysl)  # send it to client
+        conn.close()  # close connection
+        print(self.get_time() + "Connection " + ip + ":" + port + " ended...")
+
     @staticmethod
     def get_time():
         return str(datetime.datetime.now().time()) + " "
@@ -65,31 +86,12 @@ class CAServer:
         new_job = CaJob(the_rule_num, rule_radius, conf_num, conf_length,
                         this_ngens)
         file_name = new_job.get_file_name()
+        conf_num = "".join(str(x) for x in conf_num)
+        conf_num.strip(",")
         job_string = str(the_rule_num) + " " + str(rule_radius) + " " + str(
             conf_num) + " " + str(conf_length) + " " + str(this_ngens)
         with open(self.job_directory + file_name, "w") as text_file:
             print(f"{job_string}", file=text_file)
-
-    def client_thread(self, conn, ip, port, max_buffer_size=4096):
-
-        # the input is in bytes, so decode it
-        input_from_client_bytes = conn.recv(max_buffer_size)
-
-        # max_buffer_size is how big the message can be
-        siz = sys.getsizeof(input_from_client_bytes)
-        if siz >= max_buffer_size:
-            print("The length of input is probably too long: {}".format(siz))
-
-        # decode input and strip the end of line
-        input_from_client = input_from_client_bytes.decode("utf8").rstrip()
-
-        res = self.parse_ca_job_string(input_from_client)
-        # print("Result of processing {} is: {}".format(input_from_client, res))
-
-        vysl = res.encode("utf8")  # encode the result string
-        conn.sendall(vysl)  # send it to client
-        conn.close()  # close connection
-        print(self.get_time() + "Connection " + ip + ":" + port + " ended...")
 
     def start_server(self):
         print(self.get_time() + "Starting CA server...")
@@ -145,9 +147,6 @@ class CaJob:
         self.file_name = self.config_file_name()
         self.result = self.run_job()
 
-    def get_file_name(self):
-        return self.file_name
-
     def config_file_name(self):
         date = datetime.datetime.now()
         date = date.strftime("%m%d%y_%H%M%S")
@@ -156,6 +155,9 @@ class CaJob:
             str(self.conf_length) + "_" + \
             str(self.this_ngens) + "_" + date + ".txt"
         return file_name
+
+    def get_file_name(self):
+        return self.file_name
 
     def run_job(self):
         result = list()

@@ -1,7 +1,8 @@
-from datetime import datetime
 import sys
-from contextlib import redirect_stdout
 import unittest
+from contextlib import redirect_stdout
+from datetime import datetime
+
 import CA
 
 CONSOLE_OUTPUT = 1
